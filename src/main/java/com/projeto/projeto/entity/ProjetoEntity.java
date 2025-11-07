@@ -41,10 +41,17 @@ public class ProjetoEntity {
     @Enumerated(EnumType.STRING)
     private StatusDoProjeto statusDoProjeto;
 
+    @Transient
+    private String classificacaoRisco;
+
     public String getClassificacaoRisco() {
         BigDecimal orcamento = getOrcamentoTotal();
         LocalDate inicio = getDataInicio();
         LocalDate previsao = getPrevisaoTermino();
+
+        if (orcamentoTotal == null || dataInicio == null || previsaoTermino == null) {
+            return "Desconhecido";
+        }
 
         long meses = ChronoUnit.MONTHS.between(inicio, previsao);
 

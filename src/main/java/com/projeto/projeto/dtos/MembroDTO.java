@@ -1,17 +1,16 @@
 package com.projeto.projeto.dtos;
 
-import com.projeto.projeto.enums.StatusDoProjeto;
+import com.projeto.projeto.enums.AtribuicaoMembro;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjetoDTO {
+public class MembroDTO {
+
     private Long id;
     private String nome;
-    private StatusDoProjeto statusDoProjeto;
-    private BigDecimal orcamentoTotal;
+    private AtribuicaoMembro atribuicaoMembro;
 }
