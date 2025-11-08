@@ -31,9 +31,8 @@ public class ProjetoEntity {
     @Lob
     private String descricao;
 
-    @ManyToOne
-    @JoinColumn(name = "gerente_id")
-    private MembroEntity gerente;
+    @Column(name = "gerente_id")
+    private Long gerenteId;
 
     @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AlocacaoEntity> alocacoes;

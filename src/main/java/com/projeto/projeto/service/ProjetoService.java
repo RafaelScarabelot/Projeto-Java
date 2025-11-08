@@ -10,7 +10,9 @@ import com.projeto.projeto.enums.AtribuicaoMembro;
 import com.projeto.projeto.enums.StatusDoProjeto;
 import com.projeto.projeto.exeception.OperacaoNaoPermitidaException;
 import com.projeto.projeto.exeception.ProjetoNotFoundException;
+import com.projeto.projeto.mapper.ProjetoMapper;
 import com.projeto.projeto.repository.ProjetoRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,35 +24,45 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class ProjetoService {
 
     private final ProjetoRepository projetoRepository;
-
+    private final ProjetoMapper projetoMapper;
     private final MembroService membroService;
 
-    public ProjetoService(ProjetoRepository projetoRepository, MembroService membroService) {
-        this.projetoRepository = projetoRepository;
-        this.membroService = membroService;
-    }
 
-    public ProjetoEntity salvar(ProjetoEntity projeto) {
+    public ProjetoEntity salvarProjeto(ProjetoEntity projeto) {
+        Long gerenteId = projeto.getGerenteId();
 
-        if (projeto.getDataInicio() == null || projeto.getPrevisaoTermino() == null || projeto.getOrcamentoTotal() == null) {
-            throw new IllegalArgumentException("Data de início, previsão de término e orçamento são obrigatórios.");
+        try {
+            MembroDTO gerente = membroService.buscarPorId(gerenteId);
+            if (gerente == null) {
+                throw new IllegalArgumentException("Gerente com id " + gerenteId + " não encontrado.");
+            }
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Gerente com id " + gerenteId + " não encontrado.");
         }
-
-        String resultadoClassificacao = projeto.getClassificacaoRisco();
-        projeto.setClassificacaoRisco(resultadoClassificacao);
-
-        if (projeto.getStatusDoProjeto() == null) {
-            projeto.setStatusDoProjeto(StatusDoProjeto.EM_ANALISE);
-        }
-
-        validarAlocacoes(projeto);
 
         return projetoRepository.save(projeto);
-
     }
+
+    public Page<ProjetoDTO> listarProjetosComFiltro(String nome, StatusDoProjeto status, Pageable pageable) {
+        Page<ProjetoEntity> projetos;
+
+        if (nome != null && status != null) {
+            projetos = projetoRepository.findByStatusDoProjetoAndNomeContainingIgnoreCase(status, nome, pageable);
+        } else if (nome != null) {
+            projetos = projetoRepository.findByNomeContainingIgnoreCase(nome, pageable);
+        } else if (status != null) {
+            projetos = projetoRepository.findByStatusDoProjeto(status, pageable);
+        } else {
+            projetos = projetoRepository.findAll(pageable);
+        }
+
+        return projetos.map(projetoMapper::toDTO); // usando mapper
+    }
+
 
     public ProjetoEntity buscarPorId(Long id) {
         return projetoRepository.findById(id)
@@ -91,7 +103,7 @@ public class ProjetoService {
         projetoExistente.setDataRealTermino(projetoAtualizado.getDataRealTermino());
         projetoExistente.setOrcamentoTotal(projetoAtualizado.getOrcamentoTotal());
         projetoExistente.setDescricao(projetoAtualizado.getDescricao());
-        projetoExistente.setGerente(projetoAtualizado.getGerente());
+        projetoExistente.setGerenteId(projetoAtualizado.getGerenteId());
 
         if (projetoAtualizado.getAlocacoes() != null) {
             projetoExistente.getAlocacoes().clear();
@@ -229,29 +241,22 @@ public class ProjetoService {
         }
 
 
-    public Page<ProjetoDTO> listarProjetosComFiltro(String nome, StatusDoProjeto status, Pageable pageable) {
-        Page<ProjetoEntity> projetos;
-
-        if (nome != null && status != null) {
-            projetos = projetoRepository.findByStatusDoProjetoAndNomeContainingIgnoreCase(status, nome, pageable);
-        } else if (nome != null) {
-            projetos = projetoRepository.findByNomeContainingIgnoreCase(nome, pageable);
-        } else if (status != null) {
-            projetos = projetoRepository.findByStatusDoProjeto(status, pageable);
-        } else {
-            projetos = projetoRepository.findAll(pageable);
-        }
-
-        return projetos.map(this::mapToDTO);
-    }
-
     private ProjetoDTO mapToDTO(ProjetoEntity projeto) {
+        if (projeto == null) return null;
+
         return new ProjetoDTO(
                 projeto.getId(),
                 projeto.getNome(),
+                projeto.getDataInicio(),
+                projeto.getPrevisaoTermino(),
+                projeto.getDataRealTermino(),
+                projeto.getOrcamentoTotal(),
+                projeto.getDescricao(),
+                projeto.getGerenteId(),
                 projeto.getStatusDoProjeto(),
-                projeto.getOrcamentoTotal()
+                projeto.getClassificacaoRisco()
         );
     }
+
 
     }
