@@ -1,36 +1,56 @@
 package com.projeto.projeto.controller;
 
-import com.projeto.projeto.entity.AlocacaoEntity;
+import com.projeto.projeto.dtos.MembroDTO;
 import com.projeto.projeto.service.AlocacaoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/alocacoes")
+@RequestMapping("/projetos")
+@Tag(name = "Alocação de Membros", description = "Endpoints para gerenciar alocação de membros em projetos")
+@RequiredArgsConstructor
 public class AlocacaoController {
 
-    @Autowired
-    private AlocacaoService alocacaoService;
+    private final AlocacaoService alocacaoService;
 
-    @GetMapping
-    public List<AlocacaoEntity> listarTodas() {
-        return alocacaoService.listarTodas();
+    @Operation(summary = "Alocar membro ao projeto")
+    @PostMapping("/{projetoId}/membros/{membroId}")
+    public ResponseEntity<String> alocarMembro(
+            @PathVariable Long projetoId,
+            @PathVariable Long membroId
+    ) {
+        alocacaoService.alocarMembro(projetoId, membroId);
+        return ResponseEntity.ok("Membro alocado com sucesso");
     }
 
-    @GetMapping("/{id}")
-    public AlocacaoEntity buscarPorId(@PathVariable Long id) {
-        return alocacaoService.buscarPorId(id);
+    @Operation(summary = "Desalocar membro do projeto")
+    @DeleteMapping("/{projetoId}/membros/{membroId}")
+    public ResponseEntity<String> desalocarMembro(
+            @PathVariable Long projetoId,
+            @PathVariable Long membroId
+    ) {
+        alocacaoService.desalocarMembro(projetoId, membroId);
+        return ResponseEntity.ok("Membro desalocado com sucesso");
     }
 
-    @PostMapping
-    public AlocacaoEntity criarAlocacao(@RequestBody AlocacaoEntity alocacao) {
-        return alocacaoService.criarAlocacao(alocacao);
+    @Operation(summary = "Listar membros do projeto")
+    @GetMapping("/{projetoId}/membros")
+    public List<MembroDTO> listarMembrosProj(@PathVariable Long projetoId) {
+        return alocacaoService.listarMembrosProj(projetoId);
     }
 
-    @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Long id) {
-        alocacaoService.deletar(id);
+    @Operation(summary = "Editar alocação de membro")
+    @PutMapping("/{projetoId}/membros/{membroId}")
+    public ResponseEntity<String> editarAlocacao(
+            @PathVariable Long projetoId,
+            @PathVariable Long membroId
+    ) {
+        alocacaoService.editarAlocacao(projetoId, membroId);
+        return ResponseEntity.ok("Alocação editada com sucesso");
     }
 }

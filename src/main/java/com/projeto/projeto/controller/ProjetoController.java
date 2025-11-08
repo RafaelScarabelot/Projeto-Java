@@ -18,6 +18,7 @@ import java.util.List;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 
 @RestController
@@ -30,11 +31,11 @@ public class ProjetoController {
     private final ProjetoMapper projetoMapper;
 
 
-
+    @Operation(summary = "Criar projeto")
     @PostMapping("/criar")
-    public ResponseEntity<?> criarProjeto(@RequestBody ProjetoDTO projetoDTO) {
+    public ResponseEntity<?> criarProjeto(@Valid @RequestBody ProjetoDTO projetoDTO) {
         try {
-            ProjetoEntity projeto = projetoMapper.toEntity(projetoDTO); // <--- aqui
+            ProjetoEntity projeto = projetoMapper.toEntity(projetoDTO);
             ProjetoEntity salvo = projetoService.salvarProjeto(projeto);
             return ResponseEntity.status(HttpStatus.CREATED).body(projetoMapper.toDTO(salvo));
         } catch (IllegalArgumentException e) {
@@ -43,13 +44,20 @@ public class ProjetoController {
     }
 
 
+    @Operation(summary = "Buscar projeto por ID")
+    @GetMapping("/{id}")
+    public ProjetoDTO buscarPorId(@PathVariable Long id) {
+        ProjetoEntity projeto = projetoService.buscarPorId(id);
+        return projetoMapper.toDTO(projeto);
+    }
+
     @Operation(summary = "Listar todos os projetos (sem paginação)")
     @GetMapping("/todos")
     public List<ProjetoDTO> listarTodosProjetos() {
         return projetoService.listar()
                 .stream()
                 .map(projetoMapper::toDTO)
-                .toList(); // converte cada ProjetoEntity para ProjetoDTO
+                .toList();
     }
 
     @Operation(summary = "Atualizar um projeto existente")

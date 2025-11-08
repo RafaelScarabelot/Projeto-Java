@@ -28,7 +28,7 @@ public class ProjetoEntity {
     private LocalDate dataRealTermino;
     private BigDecimal orcamentoTotal;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String descricao;
 
     @Column(name = "gerente_id")
