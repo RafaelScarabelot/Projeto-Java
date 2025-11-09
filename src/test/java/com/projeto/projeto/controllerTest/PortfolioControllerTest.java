@@ -28,7 +28,7 @@ public class PortfolioControllerTest {
     private PortfolioController portfolioController;
 
     @Test
-    @DisplayName("Deve retornar um relatório")
+    @DisplayName("Teste de Integração - Deve retornar um relatório")
     void gerarRelatorio_DeveRetornarRelatorio() throws Exception {
         PortfolioReportDTO relatorio = new PortfolioReportDTO(
                 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L,

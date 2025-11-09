@@ -30,7 +30,7 @@ public class AlocacaoControllerTest {
     private AlocacaoController alocacaoController;
 
     @Test
-    @DisplayName("Deve alocar membro ao projeto")
+    @DisplayName("Teste de Integração - Deve alocar membro ao projeto")
     void alocarMembro_DeveRetornarSucesso() throws Exception {
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(alocacaoController).build();
 
@@ -42,7 +42,7 @@ public class AlocacaoControllerTest {
     }
 
     @Test
-    @DisplayName("Deve desalocar membro do projeto")
+    @DisplayName("Teste de Integração - Deve desalocar membro do projeto")
     void desalocarMembro_DeveRetornarSucesso() throws Exception {
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(alocacaoController).build();
 
@@ -54,7 +54,7 @@ public class AlocacaoControllerTest {
     }
 
     @Test
-    @DisplayName("Deve listar membros do projeto")
+    @DisplayName("Teste de Integração - Deve listar membros do projeto")
     void listarMembrosProj_DeveRetornarLista() throws Exception {
         List<MembroDTO> membros = Arrays.asList(
                 new MembroDTO(1L, "João", AtribuicaoMembro.FUNCIONARIO),
@@ -75,7 +75,7 @@ public class AlocacaoControllerTest {
     }
 
     @Test
-    @DisplayName("Deve editar alocação de membro")
+    @DisplayName("Teste de Integração - Deve editar alocação de membro")
     void editarAlocacao_DeveRetornarSucesso() throws Exception {
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(alocacaoController).build();
 

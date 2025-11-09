@@ -30,4 +30,12 @@ public class MembroService {
         return restTemplate.postForObject(API_URL, membroDTO, MembroDTO.class);
     }
 
+    public void atualizarMembro(Long id, MembroDTO membroDTO){
+        restTemplate.put(API_URL + "/" + id, membroDTO);
+    }
+
+    public void deletarMembro(Long id){
+        restTemplate.delete(API_URL + "/" + id);
+    }
+
 }

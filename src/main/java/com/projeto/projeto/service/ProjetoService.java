@@ -60,7 +60,7 @@ public class ProjetoService {
             projetos = projetoRepository.findAll(pageable);
         }
 
-        return projetos.map(projetoMapper::toDTO); // usando mapper
+        return projetos.map(projetoMapper::toDTO);
     }
 
 

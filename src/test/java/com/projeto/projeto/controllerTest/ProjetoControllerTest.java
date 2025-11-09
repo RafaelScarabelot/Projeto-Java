@@ -67,7 +67,7 @@ public class ProjetoControllerTest {
     }
 
     @Test
-    @DisplayName("TESTE INTEGRAÇÃO – Deve salvar projeto com sucesso e retornar 201 CREATED")
+    @DisplayName("Teste de Integração - Deve salvar projeto com sucesso e retornar 201 CREATED")
     public void criarProjeto() throws Exception {
         when(membroService.buscarPorId(1L)).thenReturn(new MembroDTO(1L, "João Silva", AtribuicaoMembro.GERENTE));
         
@@ -92,7 +92,7 @@ public class ProjetoControllerTest {
     }
 
     @Test
-    @DisplayName("TESTE INTEGRAÇÃO – Deve dar erro ao criar projeto e retornar Bad Request")
+    @DisplayName("Teste de Integração - Deve dar erro ao criar projeto e retornar Bad Request")
     public void deveFalharQuandoGerenteNaoExiste() throws Exception {
         String projetoJson = """
             {
@@ -113,7 +113,7 @@ public class ProjetoControllerTest {
     }
 
     @Test
-    @DisplayName("TESTE INTEGRAÇÃO – Deve buscar projeto por meio do id")
+    @DisplayName("Teste de Integração - Deve buscar projeto por meio do id")
     public void deveRetornarOProjetoPeloIdEnviado() throws Exception{
         ProjetoEntity projeto = new ProjetoEntity();
         projeto.setNome("Projeto1");
@@ -133,7 +133,7 @@ public class ProjetoControllerTest {
     }
 
     @Test
-    @DisplayName("TESTE INTEGRAÇÃO – Deve retornar erro 404 quando projeto não existe")
+    @DisplayName("Teste de Integração - Deve retornar erro 404 quando projeto não existe")
     public void deveRetornarErroQuandoProjetoNaoExiste() throws Exception{
         Long idInexistente = 999L;
 
@@ -143,7 +143,7 @@ public class ProjetoControllerTest {
     }
 
     @Test
-    @DisplayName("TESTE INTEGRAÇÃO – Deve atualizar projeto existente")
+    @DisplayName("Teste de Integração - Deve atualizar projeto existente")
     public void deveAtualizarProjetoExistente() throws Exception {
         when(membroService.buscarPorId(1L)).thenReturn(new MembroDTO(1L, "João Silva", AtribuicaoMembro.GERENTE));
         
@@ -178,7 +178,7 @@ public class ProjetoControllerTest {
     }
 
     @Test
-    @DisplayName("TESTE INTEGRAÇÃO – Deve retornar erro ao atualizar projeto iniciado")
+    @DisplayName("Teste de Integração - Deve retornar erro ao atualizar projeto iniciado")
     public void deveRetornarErroAoTentarAtualizarProjetoIniciado() throws Exception {
         when(membroService.buscarPorId(1L)).thenReturn(new MembroDTO(1L, "João Silva", AtribuicaoMembro.GERENTE));
         
@@ -212,7 +212,7 @@ public class ProjetoControllerTest {
     }
 
     @Test
-    @DisplayName("TESTE INTEGRAÇÃO – Deve listar todos os projetos")
+    @DisplayName("Teste de Integração - Deve listar todos os projetos")
     public void deveListarTodosProjetos() throws Exception {
         ProjetoEntity projeto1 = new ProjetoEntity();
         projeto1.setNome("Projeto1");
@@ -241,7 +241,7 @@ public class ProjetoControllerTest {
     }
 
     @Test
-    @DisplayName("TESTE INTEGRAÇÃO – Deve retornar lista vazia quando não há projetos")
+    @DisplayName("Teste de Integração - Deve retornar lista vazia quando não há projetos")
     public void deveRetornarListaVaziaQuandoNaoHaProjetos() throws Exception {
         mockMvc.perform(get("/projetos/todos")
                         .with(httpBasic("admin", "1234")))
@@ -250,7 +250,7 @@ public class ProjetoControllerTest {
     }
 
     @Test
-    @DisplayName("TESTE INTEGRAÇÃO – Deve deletar projeto com sucesso")
+    @DisplayName("Teste de Integração - Deve deletar projeto com sucesso")
     public void deveDeletarProjeto() throws Exception {
         ProjetoEntity projeto = new ProjetoEntity();
         projeto.setNome("Projeto Para Deletar");
@@ -268,7 +268,7 @@ public class ProjetoControllerTest {
     }
 
     @Test
-    @DisplayName("TESTE INTEGRAÇÃO – Deve retornar erro ao deletar projeto iniciado")
+    @DisplayName("Teste de Integração - Deve retornar erro ao deletar projeto iniciado")
     public void deveRetornarErroAoDeletarProjetoIniciado() throws Exception {
         ProjetoEntity projeto = new ProjetoEntity();
         projeto.setNome("Projeto Iniciado");
@@ -287,7 +287,7 @@ public class ProjetoControllerTest {
     }
 
     @Test
-    @DisplayName("TESTE INTEGRAÇÃO – Deve atualizar status do projeto")
+    @DisplayName("Teste de Integração - Deve atualizar status do projeto")
     public void deveAtualizarStatusProjeto() throws Exception {
         ProjetoEntity projeto = new ProjetoEntity();
         projeto.setNome("Projeto Status");
@@ -307,7 +307,7 @@ public class ProjetoControllerTest {
     }
 
     @Test
-    @DisplayName("TESTE INTEGRAÇÃO – Deve retornar erro ao pular etapa de status")
+    @DisplayName("Teste de Integração - Deve retornar erro ao pular etapa de status")
     public void deveRetornarErroAoPularEtapaStatus() throws Exception {
         ProjetoEntity projeto = new ProjetoEntity();
         projeto.setNome("Projeto Status");
@@ -327,7 +327,7 @@ public class ProjetoControllerTest {
     }
 
     @Test
-    @DisplayName("TESTE INTEGRAÇÃO – Deve listar projetos com filtro por nome")
+    @DisplayName("Teste de Integração - Deve listar projetos com filtro por nome")
     public void deveListarProjetosComFiltroNome() throws Exception {
         ProjetoEntity projeto1 = new ProjetoEntity();
         projeto1.setNome("Sistema Vendas");
@@ -355,7 +355,7 @@ public class ProjetoControllerTest {
     }
 
     @Test
-    @DisplayName("TESTE INTEGRAÇÃO – Deve listar projetos com filtro por status")
+    @DisplayName("Teste de Integração - Deve listar projetos com filtro por status")
     public void deveListarProjetosComFiltroStatus() throws Exception {
         ProjetoEntity projeto1 = new ProjetoEntity();
         projeto1.setNome("Projeto1");
@@ -384,7 +384,7 @@ public class ProjetoControllerTest {
     }
 
     @Test
-    @DisplayName("TESTE INTEGRAÇÃO – Deve listar projetos com paginação")
+    @DisplayName("Teste de Integração - Deve listar projetos com paginação")
     public void deveListarProjetosComPaginacao() throws Exception {
         // Criar 3 projetos
         for (int i = 1; i <= 3; i++) {
